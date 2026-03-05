@@ -2,7 +2,7 @@ Bu loyiha Android'da View ni Bitmap (rasm) ko‘rinishiga aylantirishni ko‘rsa
 
 Foydalanuvchi buttonni bosganda layout rasmga aylantiriladi va natija ImageView'da ko‘rsatiladi.
 
-<img width="576" height="1280" alt="image" src="https://github.com/user-attachments/assets/022810ce-7f45-453e-ab9a-607a315a4d5d" /><img width="576" height="1280" alt="image" src="https://github.com/user-attachments/assets/56e66a5f-3560-4fe2-9afb-2924e3e2a36e" />
+<img width="576" height="1280" alt="image" src="https://github.com/user-attachments/assets/022810ce-7f45-453e-ab9a-607a315a4d5d" />
 
 Qanday ishlaydi
 
