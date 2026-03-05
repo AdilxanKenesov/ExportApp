@@ -164,6 +164,66 @@ pdfDocument.finishPage(page)
 
 ---
 
+Example 4 — Image yoki PDF ni Export & Share qilish
+
+Bu example Android layout (ImageView) ni PNG yoki PDF formatida export qilish, preview qilish, share qilish va ochish imkonini beradi.
+
+Foydalanuvchi:
+
+* Export tugmasi → Image PNG formatida Pictures papkasiga saqlanadi
+* Share tugmasi → Oxirgi export qilingan faylni boshqa ilovalar bilan ulashadi
+* Open File tugmasi → Oxirgi export qilingan faylni ochadi
+* PDF export ham qo‘shilishi mumkin (bitmap → PDF)
+
+  <img width="576" height="1280" alt="image" src="https://github.com/user-attachments/assets/56a7dc8f-dc29-4e45-8327-9711922ac762" />
+  <img width="576" height="1280" alt="image" src="https://github.com/user-attachments/assets/e7374574-1391-46fc-8942-43553d5c97b2" />
+
+Asosiy kod (PNG va PDF export)
+```
+private fun getBitmap(): Bitmap {
+    val bitmap = Bitmap.createBitmap(content.width, content.height, Bitmap.Config.ARGB_8888)
+    val canvas = Canvas(bitmap)
+    content.draw(canvas)
+    return bitmap
+}
+
+private fun exportImage() {
+    val bitmap = getBitmap()
+    val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+        "${SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault()).format(Date())}.png")
+    FileOutputStream(file).use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
+    imgResult.setImageBitmap(bitmap)
+    lastFile = file
+    Toast.makeText(this, "Image muvaffaqiyatli saqlandi!", Toast.LENGTH_SHORT).show()
+}
+
+private fun exportPdf() {
+    val bitmap = getBitmap()
+    val pdf = PdfDocument()
+    val pageInfo = PdfDocument.PageInfo.Builder(bitmap.width, bitmap.height, 1).create()
+    val page = pdf.startPage(pageInfo)
+    page.canvas.drawBitmap(bitmap, 0f, 0f, null)
+    pdf.finishPage(page)
+    val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
+        "${SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault()).format(Date())}.pdf")
+    FileOutputStream(file).use { pdf.writeTo(it) }
+    pdf.close()
+    lastFile = file
+    Toast.makeText(this, "PDF muvaffaqiyatli saqlandi!", Toast.LENGTH_SHORT).show()
+}
+
+private fun shareFile(file: File) {
+    val uri = FileProvider.getUriForFile(this, "$packageName.provider", file)
+    val intent = Intent(Intent.ACTION_SEND).apply {
+        type = if (file.extension == "pdf") "application/pdf" else "image/png"
+        putExtra(Intent.EXTRA_STREAM, uri)
+        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    }
+    startActivity(Intent.createChooser(intent, "Share File"))
+}
+```
+
+
 # 🧰 Technologies
 
 * Kotlin
@@ -173,6 +233,7 @@ pdfDocument.finishPage(page)
 * PdfDocument
 * ViewBinding
 * Kotlin Faker
+* FileProvider
 
 ---
 
