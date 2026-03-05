@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.drawToBitmap
 import uz.gita.exportapp.databinding.ActivityMainBinding
 import java.io.File
 import java.io.FileOutputStream
@@ -36,6 +37,8 @@ class MainActivity : AppCompatActivity() {
                 val canvas = Canvas(bitmap)
                 content.draw(canvas)
                 imgResult.setImageBitmap(bitmap)
+//                val bitmap2 = content.drawToBitmap()    bitmap Extention
+//                imgResult.setImageBitmap(bitmap2)
 
                 //val uuid = UUID.randomUUID().toString()
                // val timeName = System.currentTimeMillis().toString()
